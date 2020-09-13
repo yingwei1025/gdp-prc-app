@@ -36,7 +36,7 @@ export class CagrDialogComponent implements OnInit {
 
   ngOnInit() {}
 
-  private formLoad(): void {
+  public formLoad(): void {
     this.calForm = this.fb.group({
       beginValueField: [AppConstant.CT_EMPTY, Validators.required],
       finalValueField: [AppConstant.CT_EMPTY, Validators.required],
@@ -45,15 +45,15 @@ export class CagrDialogComponent implements OnInit {
     this.fieldControl = this.calForm.controls;
   }
 
-  private onSave(): void {
+  public onSave(): void {
     this.calForm.valid ? this.calCagr() : this.onValidateForm();
   }
 
-  private calCagr(): void {
+  public calCagr(): void {
     this.dialogRef.close(this.cagrResult);
   }
 
-  private prepareData() {
+  public prepareData() {
     const formValue = this.calForm.value;
     const dataList = {
       beginValue: formValue.beginValueField,
@@ -63,7 +63,7 @@ export class CagrDialogComponent implements OnInit {
     return dataList;
   }
 
-  private onValidateForm(): void {
+  public onValidateForm(): void {
     Object.keys(this.calForm.controls).forEach(field => {
       const control = this.calForm.get(field);
       if (control instanceof FormControl) {
@@ -72,7 +72,7 @@ export class CagrDialogComponent implements OnInit {
     });
   }
 
-  private onKeyUpCal(): void {
+  public onKeyUpCal(): void {
     const completeData = this.prepareData();
     if (
       this.commonService.verifyNumber(completeData.beginValue) &&

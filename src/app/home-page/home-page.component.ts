@@ -74,7 +74,7 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  private formLoad(): void {
+  public formLoad(): void {
     this.calForm = this.fb.group({
       growthField: [AppConstant.CT_EMPTY, Validators.required],
       dividendField: [AppConstant.CT_EMPTY, Validators.required],
@@ -86,24 +86,24 @@ export class HomePageComponent implements OnInit {
     this.fieldControl = this.calForm.controls;
   }
 
-  private goToNewTabUrl(url): void {
+  public goToNewTabUrl(url): void {
     window.open(url, '_blank');
   }
 
-  private onCalResult(): void {
+  public onCalResult(): void {
     this.calForm.valid ? this.calResult() : this.onValidateForm();
   }
 
-  private bugReport(): void{
+  public bugReport(): void{
     this.goToNewTabUrl('https://forms.gle/EzT4TLDPrLeMsbnDA');
   }
 
-  private buyBook(): void{
+  public buyBook(): void{
     this.goToNewTabUrl('https://www.popularonline.com.my/cnsimplified/catalog/product/view/_ignore_category/1/id/162729/s/9789839537130/?did=8');
   }
 
 
-  private onValidateForm(): void {
+  public onValidateForm(): void {
     Object.keys(this.calForm.controls).forEach(field => {
       const control = this.calForm.get(field);
       if (control instanceof FormControl) {
@@ -112,7 +112,7 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  private calResult(): void {
+  public calResult(): void {
     this.showLoading();
     this.isShowResultDiv = true;
     const formValue = this.calForm.value;
@@ -121,18 +121,18 @@ export class HomePageComponent implements OnInit {
     this.delay();
   }
 
-  private async delay() {
+  public async delay() {
     await this.delayTime(1);
     this.scrollTo('#resultAncor');
     await this.delayTime(900);
     this.hideLoading();
   }
 
-  private delayTime(ms: number) {
+  public delayTime(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  private scrollTo(where): void {
+  public scrollTo(where): void {
     this.commonService.scrollTo(where, true);
   }
 
@@ -154,7 +154,7 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  private prepareData(data): void {
+  public prepareData(data): void {
     this.growthData = data.growthField;
     this.dividendData = data.dividendField;
     this.peData = data.peField;
@@ -168,7 +168,7 @@ export class HomePageComponent implements OnInit {
     this.cashFlowData = temp[0].desc;
   }
 
-  private calGDP(g, d, p): void {
+  public calGDP(g, d, p): void {
     let gTemp: number;
     if (g >= 1 && g <= 5) {
       gTemp = 20;
@@ -223,7 +223,7 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  private calPRC(p, r, c): void {
+  public calPRC(p, r, c): void {
     let prTemp: number;
     if (p >= 1 && p <= 5) {
       prTemp = 5;
@@ -277,12 +277,12 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  private showLoading(): void {
+  public showLoading(): void {
     this.reqCount++;
     this.loading = true;
   }
 
-  private hideLoading(): void {
+  public hideLoading(): void {
     if (this.reqCount > 0) {
       this.reqCount--;
     }
@@ -291,7 +291,7 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  private async onClear(): Promise<void> {
+  public async onClear(): Promise<void> {
     this.scrollTo('#calForm');
     this.growthResult = 0;
     this.dividenResult = 0;
