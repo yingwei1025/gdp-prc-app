@@ -1,0 +1,63 @@
+// GDP-PRC-Project
+// Author: yingwei1025@gmail.com
+
+$green-color: #00c853;
+$red-color: #ff5252;
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.top-nav-bar {
+  position: fixed;
+  z-index: 99;
+}
+
+.title-text{
+    font-size:calc(0.5em + 0.5vw)
+}
+
+mat-error {
+  font-size: 9px;
+}
+
+mat-hint {
+  font-size: 9px;
+}
+
+.result-text {
+  font-size: large;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.result-text::before {
+  content: ' \00a0';
+}
+
+.pass {
+  color: $green-color;
+}
+
+.fail {
+  color: $red-color;
+}
+
+.point-text {
+    margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+}
+.pass-point {
+  background-color: $green-color;
+}
+
+.fail-point {
+  background-color: $red-color;
+}
+
+.data-result-text{
+  color: rgba(0,0,0,.54);
+}
+

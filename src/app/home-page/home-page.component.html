@@ -1,0 +1,232 @@
+<!-- GDP-PRC-Project
+Author: yingwei1025@gmail.com -->
+<div class="component-container" fxLayout="column" fxLayoutAlign="start stretch" id="calForm">
+  <app-spinner *ngIf="loading"></app-spinner>
+
+  <div class="component-header">
+    <mat-toolbar color="primary" class="mat-elevation-z4 top-nav-bar">
+      <span class="title-text">
+        {{ title }}
+        <sup class="pointer" (click)="goToNewTabUrl('https://ywchua.blogspot.com/')" matTooltip="Visit my blog">
+          &nbsp;By Yw Chua
+        </sup>
+      </span>
+      <span class="spacer"></span>
+      <!-- To-Do : Help Function -->
+      <!-- <button mat-icon-button aria-label="Hellp Button" matTooltip="Help" >
+        <mat-icon>help</mat-icon>
+      </button> -->
+      <button mat-icon-button aria-label="Get CAGR" matTooltip="Calculate CAGR" (click)="openCagrDialog()">
+        <mat-icon>calculate</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Refresh Button" matTooltip="Clear All" (click)="onClear()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Bug Report Button" matTooltip="Report Issue" (click)="bugReport()">
+        <mat-icon>bug_report</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Buy Book Button" matTooltip="Buy Book" (click)="buyBook()">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+      <!-- To-Do : Shared Function -->
+      <!-- <button mat-icon-button class="share-icon" aria-label="Share Button">
+        <mat-icon>share</mat-icon>
+      </button> -->
+    </mat-toolbar>
+  </div>
+
+  <div class="component-body">
+    <div [formGroup]="calForm" fxLayout="column" fxLayoutGap="20px">
+      
+      <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
+        <mat-card-title>GDP</mat-card-title>
+        <mat-card-subtitle>Growth&nbsp; Dividend&nbsp; PE Ratio</mat-card-subtitle>
+        <mat-card-content>
+          <div fxLayout="row wrap" fxLayout.xs="column" [fxLayoutGap]="inputGap">
+            <mat-form-field appearance="outline">
+              <mat-label>Growth 成长率</mat-label>
+              <input matInput formControlName="growthField" placeholder="Profit CAGR rate %" autocomplete="off" type="number"/>
+              <mat-icon matPrefix>trending_up</mat-icon>
+              <mat-hint align="start">* Required</mat-hint>
+              <mat-error>
+                <mat-icon> info_outline </mat-icon>
+                {{ errors.requiredField }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Dividend 股息率</mat-label>
+              <input matInput formControlName="dividendField" placeholder="Dividen Yield %" autocomplete="off" type="number" />
+              <mat-icon matPrefix>attach_money</mat-icon>
+              <mat-hint align="start">* Required</mat-hint>
+              <mat-error>
+                <mat-icon> info_outline </mat-icon>
+                {{ errors.requiredField }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>PE Ratio 本益比</mat-label>
+              <input matInput formControlName="peField" autocomplete="off" type="number" />
+              <mat-icon matPrefix>timeline</mat-icon>
+              <mat-hint align="start">* Required</mat-hint>
+              <mat-error>
+                <mat-icon> info_outline </mat-icon>
+                {{ errors.requiredField }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
+        <mat-card-title>PRC</mat-card-title>
+        <mat-card-subtitle>Profit margin&nbsp; ROE&nbsp; Cash flow</mat-card-subtitle>
+        <mat-card-content>
+          <div fxLayout="row wrap" fxLayout.xs="column" [fxLayoutGap]="inputGap">
+            <mat-form-field appearance="outline">
+              <mat-label>Profit margin 利润率</mat-label>
+              <input matInput formControlName="profitField" autocomplete="off" type="number" />
+              <mat-icon matPrefix>insights</mat-icon>
+              <mat-hint align="start">* Required</mat-hint>
+              <mat-error>
+                <mat-icon> info_outline </mat-icon>
+                {{ errors.requiredField }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>ROE 股东基金回酬率</mat-label>
+              <input matInput formControlName="roeField" autocomplete="off" type="number" />
+              <mat-icon matPrefix>show_chart</mat-icon>
+              <mat-hint align="start">* Required</mat-hint>
+              <mat-error>
+                <mat-icon> info_outline </mat-icon>
+                {{ errors.requiredField }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Cash flow 现金流状况</mat-label>
+              <mat-select formControlName="cashFlowField" [matTooltip]="fieldControl['cashFlowField'].value.desc">
+                <mat-option *ngFor="let x of cashFlowList" [value]="x">{{ x.desc }}</mat-option>
+              </mat-select>
+              <mat-hint align="start">* Required</mat-hint>
+              <mat-error>
+                <mat-icon> info_outline </mat-icon>
+                {{ errors.requiredField }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div fxLayout="row" id="resultAncor">
+        <button
+          fxFlex.xs="1 1"
+          mat-raised-button
+          color="primary"
+          appMaterialElevation
+          [defaultElevation]="defaultElevation"
+          [raisedElevation]="raisedElevation"
+          (click)="onCalResult()"
+        >
+          Calculate
+        </button>
+      </div>
+
+      <mat-divider [fxShow]="isShowResultDiv"> </mat-divider>
+      <div [fxShow]="isShowResultDiv">
+        <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
+          <mat-card-header>
+            <mat-card-title>Result</mat-card-title>
+            <mat-card-subtitle>
+              GDP + PRC = Wealth &nbsp;|&nbsp; Full Point 100 &nbsp;|&nbsp; Pass Point 50
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-divider></mat-divider>
+            <br />
+            <mat-list>
+              <div mat-subheader>
+                <b>GDP 创富</b>
+                <span class="result-text" [class]="gdpFinalTextCSS">
+                  {{ gdpFinalResult }}
+                  <span class="point-text" [class]="gdpfinalPointCss"> {{ totalGDP }} Point </span>
+                </span>
+              </div>
+              <mat-list-item>
+                <mat-icon mat-list-icon>trending_up</mat-icon>
+                <div mat-line>Growth 成长率</div>
+                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                  <span *ngIf="growthData"> {{ growthData }}% </span>
+                  <span *ngIf="growthResult" >{{ growthResult }} / 50 Point</span>
+                </div>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon mat-list-icon>attach_money</mat-icon>
+                <div mat-line>Dividend 股息率</div>
+                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                  <span *ngIf="dividendData"> {{ dividendData }}% </span>
+                  <span *ngIf="dividenResult" >{{ dividenResult }} / 20 Point</span>
+                </div>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon mat-list-icon>timeline</mat-icon>
+                <div mat-line>PE Ratio 本益比</div>
+                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                  <span *ngIf="peData"> {{ peData }}% </span>
+                  <span *ngIf="peResult" >{{ peResult }} / 30 Point</span>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <br />
+              <div mat-subheader>
+                <b>PRC 保富</b>
+                <span class="result-text" [class]="prcFinalTextCSS">
+                  {{ prcFinalResult }}
+                  <span class="point-text" [class]="prcfinalPointCss"> {{ totalPRC }} Point </span></span
+                >
+              </div>
+              <mat-list-item>
+                <mat-icon mat-list-icon>insights</mat-icon>
+                <div mat-line>Profit margin 利润率</div>
+                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                  <span *ngIf="profitData"> {{ profitData }}% </span>
+                  <span *ngIf="profitResult" >{{ profitResult }} / 20 Point</span>
+                </div>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon mat-list-icon>show_chart</mat-icon>
+                <div mat-line>ROE 股东基金回酬率</div>
+                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                  <span *ngIf="roeData"> {{ roeData }}% </span>
+                  <span *ngIf="roeResult" >{{ roeResult }} / 40 Point</span>
+                </div>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon mat-list-icon>money</mat-icon>
+                <div mat-line>Cash flow 现金流状况</div>
+                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                  <span *ngIf="cashFlowData"> {{ cashFlowData }} </span>
+                  <span *ngIf="cashResult" >{{ cashResult }} / 40 Point</span>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="scrollTo('#calForm')">
+              <mat-icon>keyboard_arrow_up</mat-icon> Back to top
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <!-- form -->
+    </div>
+
+    <!-- body -->
+  </div>
+
+  <div class="component-footer"></div>
+</div>

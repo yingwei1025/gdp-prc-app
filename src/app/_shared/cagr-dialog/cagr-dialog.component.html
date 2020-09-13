@@ -1,0 +1,61 @@
+<!-- GDP-PRC-Project
+Author: yingwei1025@gmail.com -->
+
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<div mat-dialog-content>
+  <div [formGroup]="calForm" fxLayout="column" fxLayoutGap="10px">
+    <mat-form-field appearance="outline">
+      <mat-label>Beginning Value</mat-label>
+      <input
+        matInput
+        formControlName="beginValueField"
+        autocomplete="off"
+        type="number"
+        (keyup)="onKeyUpCal()"
+      />
+      <mat-icon matPrefix>trending_up</mat-icon>
+      <mat-hint align="start">* Required</mat-hint>
+      <mat-error>
+        <mat-icon> info_outline </mat-icon>
+        {{ errors.requiredField }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Final Value</mat-label>
+      <input
+        matInput
+        formControlName="finalValueField"
+        autocomplete="off"
+        type="number"
+        (keyup)="onKeyUpCal()"
+      />
+      <mat-icon matPrefix>trending_up</mat-icon>
+      <mat-hint align="start">* Required</mat-hint>
+      <mat-error>
+        <mat-icon> info_outline </mat-icon>
+        {{ errors.requiredField }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Number of Year</mat-label>
+      <input
+        matInput
+        formControlName="numberOfYearField"
+        autocomplete="off"
+        type="number"
+        (keyup)="onKeyUpCal()"
+      />
+      <mat-icon matPrefix>trending_up</mat-icon>
+      <mat-hint align="start">* Required</mat-hint>
+      <mat-error>
+        <mat-icon> info_outline </mat-icon>
+        {{ errors.requiredField }}
+      </mat-error>
+    </mat-form-field>
+    <div *ngIf="cagrStringResult" fxLayoutAlign="center center">CAGR &nbsp;&nbsp;&nbsp;<span class="cagr-result">{{cagrResult}} %</span></div>
+  </div>
+</div>
+<div mat-dialog-actions fxLayoutAlign="center center">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSave()" cdkFocusInitial>Set Growth</button>
+</div>
