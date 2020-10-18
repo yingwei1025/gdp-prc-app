@@ -1,6 +1,13 @@
-# GdpPrcProject
+# GDP+ PRC = W Project
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
+
+# Preview
+
+<img src="./src/assets/preview1.PNG">
+
+# Live
+<a href="https://yingwei1025.github.io/gdp-prc-app/home" target="_blank">Click here to view app</a>
 
 ## Development server
 
