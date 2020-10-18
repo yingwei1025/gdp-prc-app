@@ -1,0 +1,28 @@
+<!-- GDP-PRC-Project
+Author: yingwei1025@gmail.com -->
+
+<h3 mat-dialog-title>{{ dialogTitle }}</h3>
+<div mat-dialog-content>
+  <div [formGroup]="calForm" fxLayout="column" fxLayoutGap="10px">
+    <mat-form-field appearance="outline">
+      <mat-label>Stock Name</mat-label>
+      <input
+        matInput
+        formControlName="stockName"
+        autocomplete="off"
+        appAutoFocus
+        (keyup)="handleKeyUp($event)"
+      />
+      <mat-icon matPrefix>business</mat-icon>
+      <mat-hint align="start">* Press enter to submit</mat-hint>
+      <mat-error>
+        <mat-icon> info_outline </mat-icon>
+        {{ errors.requiredField }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions fxLayoutAlign="center center">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSave()" cdkFocusInitial>Confirm</button>
+</div>

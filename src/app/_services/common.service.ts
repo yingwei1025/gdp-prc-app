@@ -3,11 +3,12 @@
 
 import { Injectable } from '@angular/core';
 import { AppConstant } from '@app/app.constants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
-  constructor() {}
+  constructor(private _snackBar: MatSnackBar) {}
 
   public scrollTo(where: string, smooth: boolean): void {
     const scrollElem = document.querySelector(where);
@@ -37,5 +38,11 @@ export class CommonService {
 
   public round2(num: number) {
     return Math.round(num * 100) / 100;
+  }
+
+  public openSnackBar(message: string) {
+    this._snackBar.open(message, 'OK', {
+      duration: 2000,
+    });
   }
 }

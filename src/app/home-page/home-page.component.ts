@@ -1,13 +1,19 @@
 // GDP-PRC-Project
 // Author: yingwei1025@gmail.com
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AppConstant } from '@app/app.constants';
 import { errorMessages } from '@app/_models/error-msg';
 import { CommonService } from '@app/_services/common.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CagrDialogComponent } from '@app/_shared/cagr-dialog/cagr-dialog.component';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { GpdPpcElement } from '@app/_models/table-model';
+import { StockNameDialogComponent } from '@app/_shared/stock-name-dialog/stock-name-dialog.component';
+import * as XLSX from 'xlsx';
+import { TableUtil } from '@app/_services/table-util';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-home-page',
@@ -15,6 +21,7 @@ import { CagrDialogComponent } from '@app/_shared/cagr-dialog/cagr-dialog.compon
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  @ViewChild(MatTable) table: MatTable<any>;
   title = '冷眼 GDP PRC Calculator 自动计算器 ';
   loading = false;
   reqCount = 0;
@@ -30,23 +37,24 @@ export class HomePageComponent implements OnInit {
   };
   cashFlowList = [
     {
-      desc: '亏蚀 Loss + 净流出 Negative Cash Flow',
+      desc: 'Profit Loss + Negative Cash Flow',
       data: 'lossNeg'
     },
     {
-      desc: '亏蚀 Loss + 净流入 Positive Cash Flow',
+      desc: 'Profit Loss + Positive Cash Flow',
       data: 'lossPos'
     },
     {
-      desc: '盈利 Profit + 净流出 Negative Cash Flow',
+      desc: 'Profit Gain + Negative Cash Flow',
       data: 'profitNeg'
     },
     {
-      desc: '盈利 Profit + 净流入 Positive Cash Flow',
+      desc: 'Profit Gain + Positive Cash Flow',
       data: 'profitPos'
     }
   ];
   isShowResultDiv = false;
+  isShowTableDiv = true;
   growthResult: number;
   dividenResult: number;
   peResult: number;
@@ -67,6 +75,10 @@ export class HomePageComponent implements OnInit {
   prcFinalTextCSS = AppConstant.CT_EMPTY;
   gdpfinalPointCss = AppConstant.CT_EMPTY;
   prcfinalPointCss = AppConstant.CT_EMPTY;
+  displayedColumns = ['stock', 'gpd', 'prc', 'growth', 'dividend', 'pe', 'profit', 'roe', 'cash', 'star'];
+  dataSource = new MatTableDataSource();
+  stockName: any;
+  tempTableIndex: any;
 
   constructor(private fb: FormBuilder, private commonService: CommonService, public dialog: MatDialog) {
     this.formLoad();
@@ -94,14 +106,15 @@ export class HomePageComponent implements OnInit {
     this.calForm.valid ? this.calResult() : this.onValidateForm();
   }
 
-  public bugReport(): void{
+  public bugReport(): void {
     this.goToNewTabUrl('https://forms.gle/EzT4TLDPrLeMsbnDA');
   }
 
-  public buyBook(): void{
-    this.goToNewTabUrl('https://www.popularonline.com.my/cnsimplified/catalog/product/view/_ignore_category/1/id/162729/s/9789839537130/?did=8');
+  public buyBook(): void {
+    this.goToNewTabUrl(
+      'https://www.popularonline.com.my/cnsimplified/catalog/product/view/_ignore_category/1/id/162729/s/9789839537130/?did=8'
+    );
   }
-
 
   public onValidateForm(): void {
     Object.keys(this.calForm.controls).forEach(field => {
@@ -147,7 +160,7 @@ export class HomePageComponent implements OnInit {
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
-      if(this.commonService.checkStringValid(result)){
+      if (this.commonService.checkStringValid(result)) {
         this.scrollTo('#calForm');
         this.fieldControl['growthField'].setValue(result);
       }
@@ -275,6 +288,75 @@ export class HomePageComponent implements OnInit {
       this.prcFinalTextCSS = 'fail';
       this.prcfinalPointCss = 'fail-point';
     }
+  }
+
+  public openStockNameDialog(): void {
+    const data = [];
+    this.dialogRef = this.dialog.open(StockNameDialogComponent, {
+      data: data,
+      width: '300px',
+      height: '230px',
+      autoFocus: false,
+      restoreFocus: false
+    });
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (this.commonService.checkStringValid(result)) {
+        this.stockName = result;
+        this.addToTable(result);
+      }
+    });
+  }
+
+  public async addToTable(stockName: String): Promise<void> {
+    this.isShowTableDiv = true;
+    const obj: GpdPpcElement = {
+      stock: String(stockName),
+      gpd: String(this.gdpFinalResult + ' ' + this.totalGDP + ' Point '),
+      gpdColor: this.totalGDP >= 50 ? 'green' : 'red',
+      prc: String(this.prcFinalResult + ' ' + this.totalPRC + ' Point '),
+      prcColor: this.totalPRC >= 50 ? 'green' : 'red',
+      growth: String(this.growthData + '%'),
+      dividend: String(this.dividenResult + '%'),
+      pe: String(this.peResult + '%'),
+      profit: String(this.profitResult + '%'),
+      roe: String(this.roeResult + '%'),
+      cash: String(this.cashFlowData)
+    };
+    this.dataSource.data.unshift(obj);
+    console.log(this.dataSource.data);
+    if (this.table) {
+      this.table.renderRows();
+      this.scrollTo('#compareListAncor');
+    } else {
+      await this.delayTime(300);
+      this.table.renderRows();
+      this.scrollTo('#compareListAncor');
+    }
+    this.commonService.openSnackBar('Insert Complete !');
+  }
+
+  public getTableIndex(index): void {
+    this.tempTableIndex = index;
+    console.log(index);
+  }
+
+  public deleteTableItem(): void {
+    // find item and remove ist
+    this.dataSource.data.splice(this.dataSource.data.indexOf(this.tempTableIndex), 1);
+    this.table.renderRows();
+    this.commonService.openSnackBar('Delete Complete !');
+  }
+
+  exportTable() {
+    TableUtil.exportTableToExcel('MaterialTable');
+    this.commonService.openSnackBar('Export Complete !');
+  }
+
+  public clearTableData(): void {
+    this.dataSource.data = [];
+    this.scrollTo('#compareListAncor');
+    this.commonService.openSnackBar('Clear List Complete !');
   }
 
   public showLoading(): void {

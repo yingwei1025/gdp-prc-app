@@ -10,7 +10,7 @@ $red-color: #ff5252;
 
 .top-nav-bar {
   position: fixed;
-  z-index: 99;
+  z-index: 100;
 }
 
 .title-text{
@@ -61,3 +61,65 @@ mat-hint {
   color: rgba(0,0,0,.54);
 }
 
+// table
+.example-container {
+  height: 100%;
+  max-height: 600px;
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+tr.mat-row:hover {
+  background-color: #E5E7E9;
+}
+
+@mixin mat-table-columns($columns)
+{
+    .mat-column-
+    {
+        @each $colName, $props in $columns {
+
+            $width: map-get($props, 'width');
+
+            &#{$colName} 
+            {
+                flex: $width;
+                min-width: $width;
+                padding-left: 5px;
+                padding-right: 5px;
+
+                @if map-has-key($props, 'color') 
+                {
+                    color: map-get($props, 'color');
+                }
+            }  
+        }
+    }
+}
+
+@include mat-table-columns((
+    stock: (width: 6rem),
+    gpd: (width: 8rem),
+    prc: (width: 8rem),
+    growth: (width: 6rem),
+    dividend: (width: 6rem),
+    pe: (width: 6rem),
+    profit: (width: 6rem),
+    roe: (width: 6rem),
+    cash: (width: 20rem),
+    star:(width:1rem)
+
+));
+
+.mat-table-sticky:first-child {
+  border-right: 1px solid #e0e0e0;
+}
+
+.mat-table-sticky:last-child {
+  border-left: 1px solid #e0e0e0;
+}

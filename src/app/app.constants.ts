@@ -11,4 +11,7 @@ export class AppConstant {
   public static CT_EMPTY = '';
   public static CT_PASS = 'PASS';
   public static CT_FAIL = 'FAIL';
+  public static CT_SPACE = ' ';
+  public static CT_SPACE_10 = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
+  public static DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm'; 
 }

@@ -16,28 +16,38 @@ Author: yingwei1025@gmail.com -->
       <!-- <button mat-icon-button aria-label="Hellp Button" matTooltip="Help" >
         <mat-icon>help</mat-icon>
       </button> -->
-      <button mat-icon-button aria-label="Get CAGR" matTooltip="Calculate CAGR" (click)="openCagrDialog()">
-        <mat-icon>calculate</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Refresh Button" matTooltip="Clear All" (click)="onClear()">
-        <mat-icon>refresh</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Bug Report Button" matTooltip="Report Issue" (click)="bugReport()">
-        <mat-icon>bug_report</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Buy Book Button" matTooltip="Buy Book" (click)="buyBook()">
-        <mat-icon>shopping_cart</mat-icon>
-      </button>
-      <!-- To-Do : Shared Function -->
-      <!-- <button mat-icon-button class="share-icon" aria-label="Share Button">
+      <div fxShow fxHide.lt-md>
+        <button mat-icon-button aria-label="Get CAGR" matTooltip="Calculate CAGR" (click)="openCagrDialog()">
+          <mat-icon>calculate</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Refresh Button" matTooltip="Clear All" (click)="onClear()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Bug Report Button" matTooltip="Report Issue" (click)="bugReport()">
+          <mat-icon>bug_report</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Buy Book Button" matTooltip="Buy Book" (click)="buyBook()">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+        <!-- To-Do : Shared Function -->
+        <!-- <button mat-icon-button class="share-icon" aria-label="Share Button">
         <mat-icon>share</mat-icon>
       </button> -->
+      </div>
+      <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="More" fxHide fxShow.lt-md>
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openCagrDialog()"><mat-icon>calculate</mat-icon>Calculate CAGR</button>
+        <button mat-menu-item (click)="onClear()"><mat-icon>refresh</mat-icon>Clear All</button>
+        <button mat-menu-item (click)="bugReport()"><mat-icon>bug_report</mat-icon>Report Issue</button>
+        <button mat-menu-item (click)="buyBook()"><mat-icon>shopping_cart</mat-icon> Buy Book</button>
+      </mat-menu>
     </mat-toolbar>
   </div>
 
   <div class="component-body">
     <div [formGroup]="calForm" fxLayout="column" fxLayoutGap="20px">
-      
       <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
         <mat-card-title>GDP</mat-card-title>
         <mat-card-subtitle>Growth&nbsp; Dividend&nbsp; PE Ratio</mat-card-subtitle>
@@ -45,8 +55,20 @@ Author: yingwei1025@gmail.com -->
           <div fxLayout="row wrap" fxLayout.xs="column" [fxLayoutGap]="inputGap">
             <mat-form-field appearance="outline">
               <mat-label>Growth 成长率</mat-label>
-              <input matInput formControlName="growthField" placeholder="Profit CAGR rate %" autocomplete="off" type="number"/>
-              <mat-icon matPrefix>trending_up</mat-icon>
+              <input
+                matInput
+                formControlName="growthField"
+                placeholder="Profit CAGR rate %"
+                autocomplete="off"
+                type="number"
+              />
+              <mat-icon
+                matPrefix
+                matTooltip="Click to calculate CAGR Rate"
+                class="pointer"
+                (click)="openCagrDialog()"
+                >trending_up</mat-icon
+              >
               <mat-hint align="start">* Required</mat-hint>
               <mat-error>
                 <mat-icon> info_outline </mat-icon>
@@ -56,7 +78,13 @@ Author: yingwei1025@gmail.com -->
 
             <mat-form-field appearance="outline">
               <mat-label>Dividend 股息率</mat-label>
-              <input matInput formControlName="dividendField" placeholder="Dividen Yield %" autocomplete="off" type="number" />
+              <input
+                matInput
+                formControlName="dividendField"
+                placeholder="Dividen Yield %"
+                autocomplete="off"
+                type="number"
+              />
               <mat-icon matPrefix>attach_money</mat-icon>
               <mat-hint align="start">* Required</mat-hint>
               <mat-error>
@@ -136,7 +164,7 @@ Author: yingwei1025@gmail.com -->
       </div>
 
       <mat-divider [fxShow]="isShowResultDiv"> </mat-divider>
-      <div [fxShow]="isShowResultDiv">
+      <div [fxShow]="isShowResultDiv" id="resultAncor">
         <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
           <mat-card-header>
             <mat-card-title>Result</mat-card-title>
@@ -148,7 +176,7 @@ Author: yingwei1025@gmail.com -->
             <mat-divider></mat-divider>
             <br />
             <mat-list>
-              <div mat-subheader>
+              <div mat-subheader fxLayout="row wrap">
                 <b>GDP 创富</b>
                 <span class="result-text" [class]="gdpFinalTextCSS">
                   {{ gdpFinalResult }}
@@ -160,7 +188,7 @@ Author: yingwei1025@gmail.com -->
                 <div mat-line>Growth 成长率</div>
                 <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
                   <span *ngIf="growthData"> {{ growthData }}% </span>
-                  <span *ngIf="growthResult" >{{ growthResult }} / 50 Point</span>
+                  <span *ngIf="growthResult">{{ growthResult }} / 50 Point</span>
                 </div>
               </mat-list-item>
               <mat-list-item>
@@ -168,7 +196,7 @@ Author: yingwei1025@gmail.com -->
                 <div mat-line>Dividend 股息率</div>
                 <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
                   <span *ngIf="dividendData"> {{ dividendData }}% </span>
-                  <span *ngIf="dividenResult" >{{ dividenResult }} / 20 Point</span>
+                  <span *ngIf="dividenResult">{{ dividenResult }} / 20 Point</span>
                 </div>
               </mat-list-item>
               <mat-list-item>
@@ -176,12 +204,12 @@ Author: yingwei1025@gmail.com -->
                 <div mat-line>PE Ratio 本益比</div>
                 <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
                   <span *ngIf="peData"> {{ peData }}% </span>
-                  <span *ngIf="peResult" >{{ peResult }} / 30 Point</span>
+                  <span *ngIf="peResult">{{ peResult }} / 30 Point</span>
                 </div>
               </mat-list-item>
               <mat-divider></mat-divider>
               <br />
-              <div mat-subheader>
+              <div mat-subheader fxLayout="row wrap">
                 <b>PRC 保富</b>
                 <span class="result-text" [class]="prcFinalTextCSS">
                   {{ prcFinalResult }}
@@ -193,7 +221,7 @@ Author: yingwei1025@gmail.com -->
                 <div mat-line>Profit margin 利润率</div>
                 <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
                   <span *ngIf="profitData"> {{ profitData }}% </span>
-                  <span *ngIf="profitResult" >{{ profitResult }} / 20 Point</span>
+                  <span *ngIf="profitResult">{{ profitResult }} / 20 Point</span>
                 </div>
               </mat-list-item>
               <mat-list-item>
@@ -201,7 +229,7 @@ Author: yingwei1025@gmail.com -->
                 <div mat-line>ROE 股东基金回酬率</div>
                 <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
                   <span *ngIf="roeData"> {{ roeData }}% </span>
-                  <span *ngIf="roeResult" >{{ roeResult }} / 40 Point</span>
+                  <span *ngIf="roeResult">{{ roeResult }} / 40 Point</span>
                 </div>
               </mat-list-item>
               <mat-list-item>
@@ -209,7 +237,7 @@ Author: yingwei1025@gmail.com -->
                 <div mat-line>Cash flow 现金流状况</div>
                 <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
                   <span *ngIf="cashFlowData"> {{ cashFlowData }} </span>
-                  <span *ngIf="cashResult" >{{ cashResult }} / 40 Point</span>
+                  <span *ngIf="cashResult">{{ cashResult }} / 40 Point</span>
                 </div>
               </mat-list-item>
             </mat-list>
@@ -218,6 +246,111 @@ Author: yingwei1025@gmail.com -->
             <button mat-button (click)="scrollTo('#calForm')">
               <mat-icon>keyboard_arrow_up</mat-icon> Back to top
             </button>
+            <button mat-button (click)="openStockNameDialog()">
+              <mat-icon>playlist_add</mat-icon> Add to table
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <mat-divider [fxShow]="isShowTableDiv" id="compareListAncor" *ngIf="dataSource.data.length > 0">
+      </mat-divider>
+      <div [fxShow]="isShowTableDiv" *ngIf="dataSource.data.length > 0">
+        <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
+          <mat-card-header>
+            <mat-card-title>
+              Compare List
+              <mat-icon
+                [inline]="true"
+                class="pointer"
+                matTooltip="The list will not be save after closed this app."
+              >
+                error_outline
+              </mat-icon>
+            </mat-card-title>
+            <mat-card-subtitle> Compare the stock </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-divider></mat-divider>
+            <br />
+            <div class="example-container">
+              <table mat-table [dataSource]="dataSource" id="MaterialTable">
+                <ng-container matColumnDef="stock" sticky>
+                  <th mat-header-cell *matHeaderCellDef>Stock</th>
+                  <td mat-cell *matCellDef="let element">{{ element.stock }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="gpd">
+                  <th mat-header-cell *matHeaderCellDef>GDP</th>
+                  <td mat-cell *matCellDef="let element" [style.color]="element.gpdColor">{{ element.gpd }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="prc">
+                  <th mat-header-cell *matHeaderCellDef>PRC</th>
+                  <td mat-cell *matCellDef="let element" [style.color]="element.prcColor">{{ element.prc }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="growth">
+                  <th mat-header-cell *matHeaderCellDef>Growth Rate</th>
+                  <td mat-cell *matCellDef="let element">{{ element.growth }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="dividend">
+                  <th mat-header-cell *matHeaderCellDef>Dividend Yield</th>
+                  <td mat-cell *matCellDef="let element">{{ element.dividend }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="pe">
+                  <th mat-header-cell *matHeaderCellDef>PE Ratio</th>
+                  <td mat-cell *matCellDef="let element">{{ element.pe }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="profit">
+                  <th mat-header-cell *matHeaderCellDef>Profit Margin</th>
+                  <td mat-cell *matCellDef="let element">{{ element.profit }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="roe">
+                  <th mat-header-cell *matHeaderCellDef>ROE</th>
+                  <td mat-cell *matCellDef="let element">{{ element.roe }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="cash">
+                  <th mat-header-cell *matHeaderCellDef>Cash Flow</th>
+                  <td mat-cell *matCellDef="let element">{{ element.cash }}</td>
+                </ng-container>
+
+                <!-- Star Column -->
+                <ng-container matColumnDef="star" stickyEnd>
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let element; let j = index">
+                    <mat-icon
+                      [matMenuTriggerFor]="tableMenu"
+                      matTooltip="More"
+                      class="pointer"
+                      (click)="getTableIndex(j)"
+                      >more_vert</mat-icon
+                    >
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </div>
+            <mat-menu #tableMenu="matMenu">
+              <button mat-menu-item (click)="deleteTableItem()"><mat-icon>delete</mat-icon>Remove</button>
+            </mat-menu>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="scrollTo('#calForm')">
+              <mat-icon>keyboard_arrow_up</mat-icon> Back to top
+            </button>
+            <button mat-button (click)="scrollTo('#resultAncor')">
+              <mat-icon>keyboard_arrow_up</mat-icon> Back to result
+            </button>
+            <button mat-button (click)="exportTable()"><mat-icon>save_alt</mat-icon> Export Excel</button>
+            <button mat-button (click)="clearTableData()"><mat-icon>clear_all</mat-icon> Clear All</button>
           </mat-card-actions>
         </mat-card>
       </div>
