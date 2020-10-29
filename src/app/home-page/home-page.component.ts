@@ -317,14 +317,13 @@ export class HomePageComponent implements OnInit {
       prc: String(this.prcFinalResult + ' ' + this.totalPRC + ' Point '),
       prcColor: this.totalPRC >= 50 ? 'green' : 'red',
       growth: String(this.growthData + '%'),
-      dividend: String(this.dividenResult + '%'),
-      pe: String(this.peResult + '%'),
-      profit: String(this.profitResult + '%'),
-      roe: String(this.roeResult + '%'),
+      dividend: String(this.dividendData + '%'),
+      pe: String(this.peData ),
+      profit: String(this.profitData + '%'),
+      roe: String(this.roeData + '%'),
       cash: String(this.cashFlowData)
     };
     this.dataSource.data.unshift(obj);
-    console.log(this.dataSource.data);
     if (this.table) {
       this.table.renderRows();
       this.scrollTo('#compareListAncor');
@@ -338,12 +337,11 @@ export class HomePageComponent implements OnInit {
 
   public getTableIndex(index): void {
     this.tempTableIndex = index;
-    console.log(index);
   }
 
   public deleteTableItem(): void {
     // find item and remove ist
-    this.dataSource.data.splice(this.dataSource.data.indexOf(this.tempTableIndex), 1);
+    this.dataSource.data.splice(this.tempTableIndex,1);
     this.table.renderRows();
     this.commonService.openSnackBar('Delete Complete !');
   }
