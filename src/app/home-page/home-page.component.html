@@ -49,10 +49,10 @@ Author: yingwei1025@gmail.com -->
   <div class="component-body">
     <div [formGroup]="calForm" fxLayout="column" fxLayoutGap="20px">
       <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
-        <mat-card-title>GDP</mat-card-title>
-        <mat-card-subtitle>Growth&nbsp; Dividend&nbsp; PE Ratio</mat-card-subtitle>
+        <mat-card-title fxLayoutAlign="center center">GDP</mat-card-title>
+        <mat-card-subtitle fxLayoutAlign="center center">Growth&nbsp; Dividend&nbsp; PE Ratio</mat-card-subtitle>
         <mat-card-content>
-          <div fxLayout="row wrap" fxLayout.xs="column" [fxLayoutGap]="inputGap">
+          <div fxLayout="row wrap" fxLayout.xs="column" [fxLayoutGap]="inputGap" fxLayoutAlign="center center">
             <mat-form-field appearance="outline">
               <mat-label>Growth 成长率</mat-label>
               <input
@@ -108,10 +108,12 @@ Author: yingwei1025@gmail.com -->
       </mat-card>
 
       <mat-card appMaterialElevation [defaultElevation]="defaultElevation" [raisedElevation]="raisedElevation">
-        <mat-card-title>PRC</mat-card-title>
-        <mat-card-subtitle>Profit margin&nbsp; ROE&nbsp; Cash flow</mat-card-subtitle>
+        <mat-card-title fxLayoutAlign="center center">PRC</mat-card-title>
+        <mat-card-subtitle fxLayoutAlign="center center"
+          >Profit margin&nbsp; ROE&nbsp; Cash flow</mat-card-subtitle
+        >
         <mat-card-content>
-          <div fxLayout="row wrap" fxLayout.xs="column" [fxLayoutGap]="inputGap">
+          <div fxLayout="row wrap" fxLayout.xs="column" [fxLayoutGap]="inputGap" fxLayoutAlign="center center">
             <mat-form-field appearance="outline">
               <mat-label>Profit margin 利润率</mat-label>
               <input matInput formControlName="profitField" autocomplete="off" type="number" />
@@ -149,9 +151,10 @@ Author: yingwei1025@gmail.com -->
         </mat-card-content>
       </mat-card>
 
-      <div fxLayout="row" id="resultAncor">
+      <div fxLayout="row" fxLayoutAlign="center center" id="resultAncor">
         <button
-          fxFlex.xs="1 1"
+          style="font-size: large"
+          fxFlex="1 1"
           mat-raised-button
           color="primary"
           appMaterialElevation
@@ -175,74 +178,74 @@ Author: yingwei1025@gmail.com -->
           <mat-card-content>
             <mat-divider></mat-divider>
             <br />
-            <mat-list>
-              <div mat-subheader fxLayout="row wrap">
-                <b>GDP 创富</b>
-                <span class="result-text" [class]="gdpFinalTextCSS">
-                  {{ gdpFinalResult }}
+            <div fxLayout="row wrap">
+              <mat-list fxFlex.gt-sm="50">
+                <div mat-subheader fxLayout="row wrap">
+                  <b>GDP 创富</b>
                   <span class="point-text" [class]="gdpfinalPointCss"> {{ totalGDP }} Point </span>
-                </span>
-              </div>
-              <mat-list-item>
-                <mat-icon mat-list-icon>trending_up</mat-icon>
-                <div mat-line>Growth 成长率</div>
-                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
-                  <span *ngIf="growthData"> {{ growthData }}% </span>
-                  <span *ngIf="growthResult">{{ growthResult }} / 50 Point</span>
+                  <span class="result-text" [class]="gdpFinalTextCSS"> {{ gdpFinalResult }}</span>
                 </div>
-              </mat-list-item>
-              <mat-list-item>
-                <mat-icon mat-list-icon>attach_money</mat-icon>
-                <div mat-line>Dividend 股息率</div>
-                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
-                  <span *ngIf="dividendData"> {{ dividendData }}% </span>
-                  <span *ngIf="dividenResult">{{ dividenResult }} / 20 Point</span>
+                <mat-list-item>
+                  <mat-icon mat-list-icon>trending_up</mat-icon>
+                  <div mat-line>Growth 成长率</div>
+                  <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                    <span *ngIf="growthData"> {{ growthData }}% </span>
+                    <span *ngIf="growthResult">{{ growthResult }} / 50 Point</span>
+                  </div>
+                </mat-list-item>
+                <mat-list-item>
+                  <mat-icon mat-list-icon>attach_money</mat-icon>
+                  <div mat-line>Dividend 股息率</div>
+                  <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                    <span *ngIf="dividendData"> {{ dividendData }}% </span>
+                    <span *ngIf="dividenResult">{{ dividenResult }} / 20 Point</span>
+                  </div>
+                </mat-list-item>
+                <mat-list-item>
+                  <mat-icon mat-list-icon>timeline</mat-icon>
+                  <div mat-line>PE Ratio 本益比</div>
+                  <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                    <span *ngIf="peData"> {{ peData }}% </span>
+                    <span *ngIf="peResult">{{ peResult }} / 30 Point</span>
+                  </div>
+                </mat-list-item>
+                <mat-divider fxHide fxShow.xs></mat-divider>
+              </mat-list>
+
+              <mat-list>
+                <div mat-subheader fxLayout="row wrap">
+                  <b>PRC 保富</b>
+                  <span class="point-text" [class]="prcfinalPointCss"> {{ totalPRC }} Point </span>
+                  <span class="result-text" [class]="prcFinalTextCSS"> {{ prcFinalResult }}</span>
                 </div>
-              </mat-list-item>
-              <mat-list-item>
-                <mat-icon mat-list-icon>timeline</mat-icon>
-                <div mat-line>PE Ratio 本益比</div>
-                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
-                  <span *ngIf="peData"> {{ peData }}% </span>
-                  <span *ngIf="peResult">{{ peResult }} / 30 Point</span>
-                </div>
-              </mat-list-item>
-              <mat-divider></mat-divider>
-              <br />
-              <div mat-subheader fxLayout="row wrap">
-                <b>PRC 保富</b>
-                <span class="result-text" [class]="prcFinalTextCSS">
-                  {{ prcFinalResult }}
-                  <span class="point-text" [class]="prcfinalPointCss"> {{ totalPRC }} Point </span></span
-                >
-              </div>
-              <mat-list-item>
-                <mat-icon mat-list-icon>insights</mat-icon>
-                <div mat-line>Profit margin 利润率</div>
-                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
-                  <span *ngIf="profitData"> {{ profitData }}% </span>
-                  <span *ngIf="profitResult">{{ profitResult }} / 20 Point</span>
-                </div>
-              </mat-list-item>
-              <mat-list-item>
-                <mat-icon mat-list-icon>show_chart</mat-icon>
-                <div mat-line>ROE 股东基金回酬率</div>
-                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
-                  <span *ngIf="roeData"> {{ roeData }}% </span>
-                  <span *ngIf="roeResult">{{ roeResult }} / 40 Point</span>
-                </div>
-              </mat-list-item>
-              <mat-list-item>
-                <mat-icon mat-list-icon>money</mat-icon>
-                <div mat-line>Cash flow 现金流状况</div>
-                <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
-                  <span *ngIf="cashFlowData"> {{ cashFlowData }} </span>
-                  <span *ngIf="cashResult">{{ cashResult }} / 40 Point</span>
-                </div>
-              </mat-list-item>
-            </mat-list>
+                <mat-list-item>
+                  <mat-icon mat-list-icon>insights</mat-icon>
+                  <div mat-line>Profit margin 利润率</div>
+                  <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                    <span *ngIf="profitData"> {{ profitData }}% </span>
+                    <span *ngIf="profitResult">{{ profitResult }} / 20 Point</span>
+                  </div>
+                </mat-list-item>
+                <mat-list-item>
+                  <mat-icon mat-list-icon>show_chart</mat-icon>
+                  <div mat-line>ROE 股东基金回酬率</div>
+                  <div mat-line class="data-result-text" fxLayout="row" [fxLayoutGap]="resultDivGap">
+                    <span *ngIf="roeData"> {{ roeData }}% </span>
+                    <span *ngIf="roeResult">{{ roeResult }} / 40 Point</span>
+                  </div>
+                </mat-list-item>
+                <mat-list-item>
+                  <mat-icon mat-list-icon>money</mat-icon>
+                  <div mat-line>Cash flow 现金流状况</div>
+                  <div mat-line class="data-result-text" fxLayout="row wrap" [fxLayoutGap]="resultDivGap">
+                    <div *ngIf="cashFlowData">{{ cashFlowData }}</div>
+                    <span *ngIf="cashResult">{{ cashResult }} / 40 Point</span>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </div>
           </mat-card-content>
-          <mat-card-actions>
+          <mat-card-actions fxLayoutAlign="center center">
             <button mat-button (click)="scrollTo('#calForm')">
               <mat-icon>keyboard_arrow_up</mat-icon> Back to top
             </button>

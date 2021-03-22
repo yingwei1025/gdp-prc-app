@@ -112,7 +112,7 @@ export class HomePageComponent implements OnInit {
 
   public buyBook(): void {
     this.goToNewTabUrl(
-      'https://www.popularonline.com.my/cnsimplified/catalog/product/view/_ignore_category/1/id/162729/s/9789839537130/?did=8'
+      'https://www.popularonline.com.my/cnsimplified/catalog/product/view/id/174614/s/9789839537130/?did=8'
     );
   }
 
@@ -318,7 +318,7 @@ export class HomePageComponent implements OnInit {
       prcColor: this.totalPRC >= 50 ? 'green' : 'red',
       growth: String(this.growthData + '%'),
       dividend: String(this.dividendData + '%'),
-      pe: String(this.peData ),
+      pe: String(this.peData),
       profit: String(this.profitData + '%'),
       roe: String(this.roeData + '%'),
       cash: String(this.cashFlowData)
@@ -341,7 +341,7 @@ export class HomePageComponent implements OnInit {
 
   public deleteTableItem(): void {
     // find item and remove ist
-    this.dataSource.data.splice(this.tempTableIndex,1);
+    this.dataSource.data.splice(this.tempTableIndex, 1);
     this.table.renderRows();
     this.commonService.openSnackBar('Delete Complete !');
   }

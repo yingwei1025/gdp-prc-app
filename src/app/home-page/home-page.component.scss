@@ -13,8 +13,8 @@ $red-color: #ff5252;
   z-index: 100;
 }
 
-.title-text{
-    font-size:calc(0.5em + 0.5vw)
+.title-text {
+  font-size: calc(0.5em + 0.5vw);
 }
 
 mat-error {
@@ -44,7 +44,7 @@ mat-hint {
 }
 
 .point-text {
-    margin-left: 10px;
+  margin-left: 10px;
   padding: 5px 10px;
   border-radius: 5px;
   color: white;
@@ -57,8 +57,8 @@ mat-hint {
   background-color: $red-color;
 }
 
-.data-result-text{
-  color: rgba(0,0,0,.54);
+.data-result-text {
+  color: rgba(0, 0, 0, 0.54);
 }
 
 // table
@@ -75,46 +75,62 @@ table {
 }
 
 tr.mat-row:hover {
-  background-color: #E5E7E9;
+  background-color: #e5e7e9;
 }
 
-@mixin mat-table-columns($columns)
-{
-    .mat-column-
-    {
-        @each $colName, $props in $columns {
+@mixin mat-table-columns($columns) {
+  .mat-column- {
+    @each $colName, $props in $columns {
+      $width: map-get($props, 'width');
 
-            $width: map-get($props, 'width');
+      &#{$colName} {
+        flex: $width;
+        min-width: $width;
+        padding-left: 5px;
+        padding-right: 5px;
 
-            &#{$colName} 
-            {
-                flex: $width;
-                min-width: $width;
-                padding-left: 5px;
-                padding-right: 5px;
-
-                @if map-has-key($props, 'color') 
-                {
-                    color: map-get($props, 'color');
-                }
-            }  
+        @if map-has-key($props, 'color') {
+          color: map-get($props, 'color');
         }
+      }
     }
+  }
 }
 
-@include mat-table-columns((
-    stock: (width: 6rem),
-    gpd: (width: 8rem),
-    prc: (width: 8rem),
-    growth: (width: 6rem),
-    dividend: (width: 6rem),
-    pe: (width: 6rem),
-    profit: (width: 6rem),
-    roe: (width: 6rem),
-    cash: (width: 20rem),
-    star:(width:1rem)
-
-));
+@include mat-table-columns(
+  (
+    stock: (
+      width: 6rem
+    ),
+    gpd: (
+      width: 8rem
+    ),
+    prc: (
+      width: 8rem
+    ),
+    growth: (
+      width: 6rem
+    ),
+    dividend: (
+      width: 6rem
+    ),
+    pe: (
+      width: 6rem
+    ),
+    profit: (
+      width: 6rem
+    ),
+    roe: (
+      width: 6rem
+    ),
+    cash: (
+      width: 20rem
+    ),
+    star: (
+      width: 1rem
+    )
+  )
+);
 
 .mat-table-sticky:first-child {
   border-right: 1px solid #e0e0e0;

@@ -2,5 +2,5 @@
 // Author: yingwei1025@gmail.com
 
 export const errorMessages: { [key: string]: string } = {
-  requiredField: 'This field cannot be blank'
+  requiredField: 'Please fill in this field'
 };
